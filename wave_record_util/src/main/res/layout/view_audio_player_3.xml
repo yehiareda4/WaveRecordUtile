@@ -66,6 +66,14 @@
             android:src="@drawable/icon_play_audio"
             app:tint="@color/colorPrimary" />
 
+        <com.github.rahatarmanahmed.cpv.CircularProgressView
+            android:id="@+id/loader_audio"
+            android:layout_width="@dimen/_16sdp"
+            android:layout_height="@dimen/_16sdp"
+            android:visibility="gone"
+            app:cpv_animAutostart="false"
+            app:cpv_indeterminate="true" />
+
     </RelativeLayout>
 
     <!--    <SeekBar-->

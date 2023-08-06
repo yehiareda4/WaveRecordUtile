@@ -8,6 +8,8 @@ import android.media.MediaMetadataRetriever
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
+import android.os.Handler
+import android.os.Looper
 import android.util.AttributeSet
 import android.util.Log
 import android.util.SparseArray
@@ -21,6 +23,7 @@ import androidx.core.content.ContextCompat
 import com.downloader.OnDownloadListener
 import com.downloader.PRDownloader
 import com.downloader.PRDownloaderConfig
+import com.github.rahatarmanahmed.cpv.CircularProgressView
 import com.masoudss.lib.SeekBarOnProgressChanged
 import com.masoudss.lib.WaveformSeekBar
 import com.yehia.wave.handler.MediaPlayerHolder
@@ -42,6 +45,8 @@ import java.util.concurrent.TimeUnit
  */
 class WavePlayerView : RelativeLayout {
 
+    private var asView: Boolean = false
+
     private lateinit var url: String
     private var activity: Activity? = null
     private var centerDuration: TextView? = null
@@ -56,6 +61,7 @@ class WavePlayerView : RelativeLayout {
     private var mDuration: TextView? = null
     private var mPlayerAdapter: PlayerAdapter? = null
     private var mTarget: PlayerTarget? = null
+    private var mLoader: CircularProgressView? = null
     private var customLayout = 0
     private var mContext: Context? = null
     private var mStringName = ""
@@ -118,20 +124,47 @@ class WavePlayerView : RelativeLayout {
         mSeekBar?.setSampleFrom(uri!!)
     }
 
+    fun setAudioTargetAsView(uri: String?, activity: Activity, duration: String = "") {
+        this.activity = activity
+        asView = true
+        this.url = uri ?: ""
+        if (url.isNotEmpty()) {
+            mTarget = PlayerTarget.Builder().withRemoteUrl(url).build()
+        }
+        mDuration!!.text = duration
+//        runBlocking(Dispatchers.IO) {
+//            mSeekBar?.setSampleFrom(url)
+//        }
+    }
+
+    fun setAudioTargetAsItemRecycle(uri: String?, activity: Activity, duration: String = "") {
+        this.activity = activity
+        asView = false
+        this.url = uri ?: ""
+        if (url.isNotEmpty()) {
+            mTarget = PlayerTarget.Builder().withRemoteUrl(url).build()
+            mSeekBar?.setSampleFrom(uri!!)
+        }
+
+        mDuration!!.text = duration
+    }
+
     fun setAudioTarget(resource: Int, activity: Activity) {
         this.activity = activity
         mTarget = PlayerTarget.Builder().withResource(resource).build()
     }
 
-    fun setColor(color: Int) {
-        mSeekBar?.waveBackgroundColor = ContextCompat.getColor(context, color)
-        mSeekBar?.waveProgressColor = ContextCompat.getColor(context, color)
+    fun setColor(color: Int, waveColor: Int) {
+        mSeekBar?.markerColor = ContextCompat.getColor(context, waveColor)
+        mSeekBar?.markerTextColor = ContextCompat.getColor(context, color)
+        mSeekBar?.waveProgressColor = ContextCompat.getColor(context, waveColor)
         mPlayButton?.setColorFilter(
             ContextCompat.getColor(context, color), android.graphics.PorterDuff.Mode.MULTIPLY
         )
         mPauseButton?.setColorFilter(
             ContextCompat.getColor(context, color), android.graphics.PorterDuff.Mode.MULTIPLY
         )
+        mDuration?.setTextColor(ContextCompat.getColor(context!!, color))
     }
 
     fun setAudioTarget(url: String, activity: Activity, duration: String = "") {
@@ -179,7 +212,6 @@ class WavePlayerView : RelativeLayout {
      * We only load the media file whe the play button is clicked the first time
      */
     private fun init(context: Context?) {
-
         val config = PRDownloaderConfig.newBuilder().setDatabaseEnabled(true).build()
         PRDownloader.initialize(context, config)
 
@@ -194,6 +226,8 @@ class WavePlayerView : RelativeLayout {
         mChronometer = findViewById(R.id.current_duration)
         mDuration = findViewById(R.id.total_duration)
         centerDuration = findViewById(R.id.center_duration)
+        mLoader = findViewById(R.id.loader_audio)
+
 //        mStringDirectory = mContext!!.getString(R.string.app_name)
         initializePlaybackController()
         mPlayButton?.setColorFilter(
@@ -202,7 +236,7 @@ class WavePlayerView : RelativeLayout {
         mPauseButton?.setColorFilter(
             ContextCompat.getColor(mContext!!, btnIcon), android.graphics.PorterDuff.Mode.MULTIPLY
         )
-        setColor(btnIcon)
+//        setColor(btnIcon, R.color.colorPrimary)
 
         if (!durationStart) {
             mChronometer!!.visibility = GONE
@@ -235,41 +269,56 @@ class WavePlayerView : RelativeLayout {
             }
         }
         mPlayButton?.setOnClickListener {
-            runBlocking(Dispatchers.IO) {
-                mSeekBar?.setSampleFrom(url)
-            }
-            if (checkAndRequestPermissions()) {
-                if (mStringName.isNotEmpty() && !isFileExist("$folderDirectory/$mStringName")) {
-                    downloadFile(mStringURL, mStringName)
-                } else {
-                    if (mTarget != null) {
-                        if (!mPlayerAdapter!!.hasTarget(mTarget)) {
-                            val urlFile = when (mTarget!!.targetType) {
-                                PlayerTarget.Type.RESOURCE -> {
-                                    (mTarget!!.resource).toString()
-                                }
-                                PlayerTarget.Type.REMOTE_FILE_URL -> {
-                                    (mTarget!!.remoteUrl).toString()
-                                }
-                                PlayerTarget.Type.LOCAL_FILE_URI -> {
-                                    Log.e("MEDIAPLAY_HOLDER_TAG", "Type is LOCAL_FILE_URI")
-                                    val audioFile = File(mTarget!!.fileUri.toString())
-                                    if (audioFile.exists()) {
-                                        (mTarget!!.fileUri.toString())
-                                    } else ""
-                                }
-                                else -> ""
-                            }
+            mPlayButton?.visibility = View.GONE
+            if (!mPlayerAdapter!!.hasTarget(mTarget)) {
+                mLoader?.visibility = View.VISIBLE
+                mLoader?.startAnimation()
+                val handler = Handler(Looper.myLooper()!!)
+                handler.postDelayed({ // Do something after 5s = 5000ms
+                    if (!mPlayerAdapter?.isPlaying!!) {
+                        if (checkAndRequestPermissions()) {
+                            if (mStringName.isNotEmpty() && !isFileExist("$folderDirectory/$mStringName")) {
+                                downloadFile(mStringURL, mStringName)
+                            } else {
+                                if (mTarget != null) {
+                                    if (!mPlayerAdapter!!.hasTarget(mTarget)) {
+                                        val urlFile = when (mTarget!!.targetType) {
+                                            PlayerTarget.Type.RESOURCE -> {
+                                                (mTarget!!.resource).toString()
+                                            }
 
-                            mPlayerAdapter!!.reset(false)
-                            initializePlaybackController()
-                            mPlayerAdapter!!.loadMedia(mTarget)
+                                            PlayerTarget.Type.REMOTE_FILE_URL -> {
+                                                (mTarget!!.remoteUrl).toString()
+                                            }
+
+                                            PlayerTarget.Type.LOCAL_FILE_URI -> {
+                                                Log.e(
+                                                    "MEDIAPLAY_HOLDER_TAG", "Type is LOCAL_FILE_URI"
+                                                )
+                                                val audioFile = File(mTarget!!.fileUri.toString())
+                                                if (audioFile.exists()) {
+                                                    (mTarget!!.fileUri.toString())
+                                                } else ""
+                                            }
+
+                                            else -> ""
+                                        }
+
+                                        mPlayerAdapter!!.reset(false)
+                                        initializePlaybackController()
+                                        mPlayerAdapter!!.loadMedia(mTarget)
+                                        runBlocking(Dispatchers.IO) {
+                                            mSeekBar?.setSampleFrom(url)
+                                        }
+                                    }
+                                    mPlayerAdapter!!.play()
+                                }
+                            }
                         }
-                        mPlayerAdapter!!.play()
-                        mPlayButton?.visibility = View.GONE
-                        mPauseButton?.visibility = View.VISIBLE
                     }
-                }
+                }, 2000)
+            } else {
+                mPlayerAdapter!!.play()
             }
         }
     }
@@ -322,6 +371,8 @@ class WavePlayerView : RelativeLayout {
 
     inner class OnPlaybackListener : OnPlaybackInfoListener() {
         override fun onDurationChanged(duration: Int) {
+//            mLoader?.visibility = View.GONE
+//            mPauseButton?.visibility = VISIBLE
             mCircleProgressBar?.setMax(duration)
             mSeekBar?.maxProgress = duration.toFloat()
             if (mDuration != null) mDuration!!.text =
@@ -343,6 +394,10 @@ class WavePlayerView : RelativeLayout {
                 mPauseButton!!.visibility = View.GONE
                 if (mChronometer != null) mChronometer!!.reset()
             } else if (state == State.PLAYING) {
+                mLoader?.stopAnimation()
+                mPlayButton!!.visibility = View.GONE
+                mLoader?.visibility = View.GONE
+                mPauseButton?.visibility = VISIBLE
                 if (mChronometer != null) mChronometer!!.start()
             } else if (state == State.PAUSED) {
                 if (mChronometer != null) mChronometer!!.stop()
