@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingHorizontal="@dimen/_2sdp"
+    android:paddingVertical="@dimen/_4sdp">
+
+    <RelativeLayout
+        android:id="@+id/v_audio_rl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true">
+
+        <com.yehia.phonicplayer.views.CustomProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:layout_centerInParent="true"
+            android:visibility="gone"
+            app:defaultColor="@color/audioDefaultColor"
+            app:progressBarThickness="@dimen/_4sdp"
+            app:progressbarColor="@color/audioProgressColor" />
+
+        <com.yehia.phonicplayer.views.CustomProgressBar
+            android:id="@+id/progressBar_download"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:layout_centerInParent="true"
+            android:visibility="gone"
+            app:defaultColor="@color/audioWhiteColor"
+            app:progressBarThickness="@dimen/_8sdp"
+            app:progressbarColor="@color/audioDefaultColor" />
+
+        <ImageView
+            android:id="@+id/button_pause"
+            android:layout_width="@dimen/_16sdp"
+            android:layout_height="@dimen/_16sdp"
+            android:layout_centerInParent="true"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/icon_recording_stop"
+            android:visibility="gone"
+            app:tint="@color/colorPrimary" />
+
+        <ImageView
+            android:id="@+id/button_error"
+            android:layout_width="@dimen/_16sdp"
+            android:layout_height="@dimen/_16sdp"
+            android:layout_centerInParent="true"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_baseline_error_outline_24"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/button_play"
+            android:layout_width="@dimen/_16sdp"
+            android:layout_height="@dimen/_16sdp"
+            android:layout_centerInParent="true"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/icon_play_audio"
+            app:tint="@color/colorPrimary" />
+
+    </RelativeLayout>
+
+    <!--    <SeekBar-->
+    <!--        android:id="@+id/seekbar_audio"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="@dimen/_4sdp"-->
+    <!--        android:layout_centerVertical="true"-->
+    <!--        android:layout_toStartOf="@+id/v_audio_ll"-->
+    <!--        android:layout_toEndOf="@+id/v_audio_rl"-->
+    <!--        android:progressDrawable="@drawable/seekbar_bg"-->
+    <!--        android:splitTrack="false"-->
+    <!--        android:thumb="@null"-->
+    <!--        android:visibility="visible" />-->
+
+    <com.masoudss.lib.WaveformSeekBar
+        android:id="@+id/seekbar_audio"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_24sdp"
+        android:layout_centerVertical="true"
+        android:layout_marginHorizontal="@dimen/_6sdp"
+        android:layout_toStartOf="@+id/v_audio_ll"
+        android:layout_toEndOf="@+id/v_audio_rl"
+        app:marker_color="@color/colorPrimary"
+        app:marker_text_color="@color/colorAccent"
+        app:marker_width="@dimen/_1sdp"
+        app:wave_background_color="@null"
+        app:wave_corner_radius="@dimen/_2sdp"
+        app:wave_gap="@dimen/_2sdp"
+        app:wave_gravity="center"
+        app:wave_max_progress="100"
+        app:wave_min_height="@dimen/_2sdp"
+        app:wave_padding_Bottom="@dimen/_2sdp"
+        app:wave_padding_left="@dimen/_2sdp"
+        app:wave_padding_right="@dimen/_2sdp"
+        app:wave_padding_top="@dimen/_2sdp"
+        app:wave_progress="0"
+        app:wave_progress_color="@color/colorPrimary"
+        app:wave_visible_progress="0"
+        app:wave_width="@dimen/_1sdp" />
+
+    <LinearLayout
+        android:id="@+id/v_audio_ll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:visibility="visible">
+
+        <com.yehia.phonicplayer.views.CustomChronometer
+            android:id="@+id/current_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/_7sdp" />
+
+        <TextView
+            android:id="@+id/center_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_1sdp"
+            android:text="/"
+            android:textSize="@dimen/_7sdp" />
+
+        <TextView
+            android:id="@+id/total_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/_00_00"
+            android:textSize="@dimen/_7sdp" />
+
+    </LinearLayout>
+
+</RelativeLayout>

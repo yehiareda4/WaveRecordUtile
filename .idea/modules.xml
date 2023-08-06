@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/WaveRecordView.iml" filepath="$PROJECT_DIR$/.idea/modules/WaveRecordView.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/WaveRecordView.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/WaveRecordView.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/WaveRecordView.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/WaveRecordView.app.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/WaveRecordView.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/WaveRecordView.app.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/WaveRecordView.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/WaveRecordView.app.unitTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/record-view/WaveRecordView.record-view.iml" filepath="$PROJECT_DIR$/.idea/modules/record-view/WaveRecordView.record-view.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/record-view/WaveRecordView.record-view.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/record-view/WaveRecordView.record-view.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/record-view/WaveRecordView.record-view.main.iml" filepath="$PROJECT_DIR$/.idea/modules/record-view/WaveRecordView.record-view.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/record-view/WaveRecordView.record-view.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/record-view/WaveRecordView.record-view.unitTest.iml" />
+    </modules>
+  </component>
+</project>
