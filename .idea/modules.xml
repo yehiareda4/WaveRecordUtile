@@ -7,10 +7,10 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/WaveRecordView.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/WaveRecordView.app.androidTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/WaveRecordView.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/WaveRecordView.app.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/WaveRecordView.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/WaveRecordView.app.unitTest.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/record-view/WaveRecordView.record-view.iml" filepath="$PROJECT_DIR$/.idea/modules/record-view/WaveRecordView.record-view.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/record-view/WaveRecordView.record-view.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/record-view/WaveRecordView.record-view.androidTest.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/record-view/WaveRecordView.record-view.main.iml" filepath="$PROJECT_DIR$/.idea/modules/record-view/WaveRecordView.record-view.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/record-view/WaveRecordView.record-view.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/record-view/WaveRecordView.record-view.unitTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/record-view/WaveRecordView.wave_record_util.iml" filepath="$PROJECT_DIR$/.idea/modules/record-view/WaveRecordView.wave_record_util.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/wave_record_util/WaveRecordView.wave_record_util.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/wave_record_util/WaveRecordView.wave_record_util.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/wave_record_util/WaveRecordView.wave_record_util.main.iml" filepath="$PROJECT_DIR$/.idea/modules/wave_record_util/WaveRecordView.wave_record_util.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/wave_record_util/WaveRecordView.wave_record_util.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/wave_record_util/WaveRecordView.wave_record_util.unitTest.iml" />
     </modules>
   </component>
 </project>

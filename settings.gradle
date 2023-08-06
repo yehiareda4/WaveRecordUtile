@@ -1,1 +1,1 @@
-include ':app', ':record-view'
+include ':app', ':wave_record_util'

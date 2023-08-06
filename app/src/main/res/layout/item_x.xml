@@ -6,7 +6,7 @@
     android:layout_marginVertical="@dimen/_4sdp"
     android:orientation="vertical">
 
-    <com.yehia.phonicplayer.views.WavePlayerView
+    <com.yehia.wave.views.WavePlayerView
         android:id="@+id/record_plays"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

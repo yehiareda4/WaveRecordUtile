@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingHorizontal="@dimen/_2sdp"
+    android:paddingVertical="@dimen/_6sdp">
+
+    <RelativeLayout
+        android:id="@+id/v_audio_rl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true">
+
+        <com.yehia.wave.views.CustomProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:layout_centerInParent="true"
+            android:visibility="gone"
+            app:defaultColor="@color/audioDefaultColor"
+            app:progressBarThickness="@dimen/_4sdp"
+            app:progressbarColor="@color/audioProgressColor" />
+
+        <com.yehia.wave.views.CustomProgressBar
+            android:id="@+id/progressBar_download"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:layout_centerInParent="true"
+            android:visibility="gone"
+            app:defaultColor="@color/audioWhiteColor"
+            app:progressBarThickness="@dimen/_8sdp"
+            app:progressbarColor="@color/audioDefaultColor" />
+
+        <ImageView
+            android:id="@+id/button_pause"
+            android:layout_width="@dimen/_16sdp"
+            android:layout_height="@dimen/_16sdp"
+            android:layout_centerInParent="true"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/icon_recording_stop"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/button_error"
+            android:layout_width="@dimen/_16sdp"
+            android:layout_height="@dimen/_16sdp"
+            android:layout_centerInParent="true"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_baseline_error_outline_24"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/button_play"
+            android:layout_width="@dimen/_16sdp"
+            android:layout_height="@dimen/_16sdp"
+            android:layout_centerInParent="true"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/icon_play_audio" />
+
+    </RelativeLayout>
+
+    <SeekBar
+        android:id="@+id/seekbar_audio"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_12sdp"
+        android:layout_centerVertical="true"
+        android:layout_toStartOf="@+id/v_audio_ll"
+        android:layout_toEndOf="@+id/v_audio_rl"
+        android:paddingVertical="@dimen/_4sdp"
+        android:progressDrawable="@drawable/seekbar_bg"
+        android:splitTrack="false"
+        android:thumb="@null"
+        android:visibility="visible" />
+
+    <LinearLayout
+        android:id="@+id/v_audio_ll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:visibility="visible">
+
+        <com.yehia.wave.views.CustomChronometer
+            android:id="@+id/current_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/_6sdp" />
+
+        <TextView
+            android:id="@+id/center_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_1sdp"
+            android:text="/"
+            android:textSize="@dimen/_7sdp" />
+
+        <TextView
+            android:id="@+id/total_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/_00_00"
+            android:textSize="@dimen/_6sdp" />
+
+    </LinearLayout>
+
+</RelativeLayout>

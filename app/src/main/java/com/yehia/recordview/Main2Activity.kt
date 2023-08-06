@@ -6,9 +6,9 @@ import android.util.Log
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.yehia.record_view.OnRecordListener
-import com.yehia.record_view.RecordButton
-import com.yehia.record_view.RecordView
+import com.yehia.wave_record_util.OnRecordListener
+import com.yehia.wave_record_util.RecordButton
+import com.yehia.wave_record_util.RecordView
 
 class Main2Activity : AppCompatActivity() {
 

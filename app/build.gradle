@@ -34,7 +34,7 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'com.intuit.sdp:sdp-android:1.0.6'
     testImplementation 'junit:junit:4.13.2'
-    implementation project(path: ':record-view')
-//    implementation "androidx.core:core-ktx:+"
+    implementation project(path: ':wave_record_util')
+    //    implementation "androidx.core:core-ktx:+"
 //    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }

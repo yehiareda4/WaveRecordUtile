@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/v_audio_rl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.yehia.wave.views.CustomProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerInParent="true"
+            app:defaultColor="@color/audioDefaultColor"
+            app:progressBarThickness="4dp"
+            app:progressbarColor="@color/audioProgressColor" />
+
+        <com.yehia.wave.views.CustomProgressBar
+            android:id="@+id/progressBar_download"
+            android:layout_width="@dimen/_60sdp"
+            android:layout_height="@dimen/_60sdp"
+            android:layout_centerInParent="true"
+            app:defaultColor="@color/audioWhiteColor"
+            app:progressBarThickness="@dimen/_8sdp"
+            app:progressbarColor="@color/audioDefaultColor" />
+
+        <ImageView
+            android:id="@+id/button_pause"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_centerInParent="true"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/icon_recording_stop"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/button_play"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_centerInParent="true"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/icon_play_audio" />
+
+    </RelativeLayout>
+
+    <SeekBar
+        android:id="@+id/seekbar_audio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:progressDrawable="@drawable/seekbar_bg"
+        android:splitTrack="false"
+        android:thumb="@null"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+
+        <com.yehia.wave.views.CustomChronometer
+            android:id="@+id/current_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp" />
+
+        <TextView
+            android:id="@+id/center_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_1sdp"
+            android:text="/"
+            android:textSize="@dimen/_8sdp" />
+
+        <TextView
+            android:id="@+id/total_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_4sdp"
+            android:text="@string/_00_00" />
+
+    </LinearLayout>
+
+</LinearLayout>
+
+

@@ -1,26 +1,14 @@
 package com.yehia.recordview;
 
-import static android.content.pm.PackageManager.PERMISSION_GRANTED;
-
-import android.Manifest;
-import android.graphics.Color;
 import android.media.MediaPlayer;
-import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.yehia.record_view.OnBasketAnimationEnd;
-import com.yehia.record_view.OnRecordClickListener;
-import com.yehia.record_view.RecordButton;
-import com.yehia.record_view.RecordView;
+import com.yehia.wave_record_util.RecordButton;
+import com.yehia.wave_record_util.RecordView;
 
 import java.util.concurrent.TimeUnit;
 
