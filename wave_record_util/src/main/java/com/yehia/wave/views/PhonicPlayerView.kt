@@ -8,11 +8,14 @@ import android.media.MediaMetadataRetriever
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
+import android.os.Handler
+import android.os.Looper
 import android.util.AttributeSet
 import android.util.Log
 import android.util.SparseArray
 import android.view.View
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.RelativeLayout
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
@@ -46,6 +49,7 @@ class PhonicPlayerView : RelativeLayout {
     private var mSeekBar: SeekBar? = null
     private var mCircleProgressBar: CustomProgressBar? = null
     private var mCircleProgressBarDownload: CustomProgressBar? = null
+    private var mLoader: ProgressBar? = null
     private var mPlayButton: ImageView? = null
     private var mErrorButton: ImageView? = null
     private var mPauseButton: ImageView? = null
@@ -164,6 +168,7 @@ class PhonicPlayerView : RelativeLayout {
         mChronometer = findViewById(R.id.current_duration)
         mDuration = findViewById(R.id.total_duration)
         centerDuration = findViewById(R.id.center_duration)
+        mLoader = findViewById(R.id.loader_audio)
 
         initializePlaybackController()
         mPlayButton?.setColorFilter(
@@ -210,42 +215,52 @@ class PhonicPlayerView : RelativeLayout {
         })
 
         mPlayButton?.setOnClickListener {
-            if (checkAndRequestPermissions()) {
-                if (mStringName.isNotEmpty() && !isFileExist("$folderDirectory/$mStringName")) {
-                    downloadFile(mStringURL, mStringName)
-                } else {
+            if (!mPlayerAdapter!!.hasTarget(mTarget)) {
+                val handler = Handler(Looper.myLooper()!!)
+                handler.postDelayed({ // Do something after 5s = 5000ms
+                    if (!mPlayerAdapter?.isPlaying!!) {
+                        if (checkAndRequestPermissions()) {
+                            if (mStringName.isNotEmpty() && !isFileExist("$folderDirectory/$mStringName")) {
+                                downloadFile(mStringURL, mStringName)
+                            } else {
+                                mPlayButton?.visibility = View.GONE
+                                mLoader?.visibility = View.VISIBLE
+                                if (mTarget != null) {
+                                    if (!mPlayerAdapter!!.hasTarget(mTarget)) {
+                                        val urlFile = when (mTarget!!.targetType) {
+                                            PlayerTarget.Type.RESOURCE -> {
+                                                (mTarget!!.resource).toString()
+                                            }
 
-                    if (mTarget != null) {
-                        if (!mPlayerAdapter!!.hasTarget(mTarget)) {
-                            val urlFile = when (mTarget!!.targetType) {
-                                PlayerTarget.Type.RESOURCE -> {
-                                    (mTarget!!.resource).toString()
+                                            PlayerTarget.Type.REMOTE_FILE_URL -> {
+                                                (mTarget!!.remoteUrl).toString()
+                                            }
+
+                                            PlayerTarget.Type.LOCAL_FILE_URI -> {
+                                                Log.e(
+                                                    "MEDIAPLAY_HOLDER_TAG", "Type is LOCAL_FILE_URI"
+                                                )
+                                                val audioFile = File(mTarget!!.fileUri.toString())
+                                                if (audioFile.exists()) {
+                                                    (mTarget!!.fileUri.toString())
+                                                } else ""
+                                            }
+
+                                            else -> ""
+                                        }
+
+                                        mPlayerAdapter!!.reset(false)
+                                        initializePlaybackController()
+                                        mPlayerAdapter!!.loadMedia(mTarget)
+                                    }
+                                    mPlayerAdapter!!.play()
                                 }
-
-                                PlayerTarget.Type.REMOTE_FILE_URL -> {
-                                    (mTarget!!.remoteUrl).toString()
-                                }
-
-                                PlayerTarget.Type.LOCAL_FILE_URI -> {
-                                    Log.e("MEDIAPLAY_HOLDER_TAG", "Type is LOCAL_FILE_URI")
-                                    val audioFile = File(mTarget!!.fileUri.toString())
-                                    if (audioFile.exists()) {
-                                        (mTarget!!.fileUri.toString())
-                                    } else ""
-                                }
-
-                                else -> ""
                             }
-
-                            mPlayerAdapter!!.reset(false)
-                            initializePlaybackController()
-                            mPlayerAdapter!!.loadMedia(mTarget)
                         }
-                        mPlayerAdapter!!.play()
-                        mPlayButton?.visibility = View.GONE
-                        mPauseButton?.visibility = View.VISIBLE
                     }
-                }
+                }, 2000)
+            } else {
+                mPlayerAdapter!!.play()
             }
         }
     }
@@ -299,6 +314,8 @@ class PhonicPlayerView : RelativeLayout {
 
     inner class OnPlaybackListener : OnPlaybackInfoListener() {
         override fun onDurationChanged(duration: Int) {
+            mLoader?.visibility = View.GONE
+            mPauseButton?.visibility = VISIBLE
             mCircleProgressBar?.setMax(duration)
             mSeekBar?.max = duration
             if (mDuration != null) mDuration!!.text =
@@ -306,6 +323,8 @@ class PhonicPlayerView : RelativeLayout {
         }
 
         override fun onPositionChanged(position: Int) {
+            mLoader?.visibility = View.GONE
+            mPauseButton?.visibility = VISIBLE
             mCircleProgressBar?.setProgress(position.toFloat())
             mSeekBar?.progress = position
             positionFile = position
@@ -433,4 +452,10 @@ class PhonicPlayerView : RelativeLayout {
         return true
     }
 
+    fun stopPlaying() {
+        if (mPlayerAdapter!!.isPlaying) {
+            mPlayerAdapter!!.pause()
+            mPlayerAdapter!!.release()
+        }
+    }
 }

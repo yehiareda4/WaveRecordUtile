@@ -269,10 +269,7 @@ class WavePlayerView : RelativeLayout {
             }
         }
         mPlayButton?.setOnClickListener {
-            mPlayButton?.visibility = View.GONE
             if (!mPlayerAdapter!!.hasTarget(mTarget)) {
-                mLoader?.visibility = View.VISIBLE
-                mLoader?.startAnimation()
                 val handler = Handler(Looper.myLooper()!!)
                 handler.postDelayed({ // Do something after 5s = 5000ms
                     if (!mPlayerAdapter?.isPlaying!!) {
@@ -280,6 +277,9 @@ class WavePlayerView : RelativeLayout {
                             if (mStringName.isNotEmpty() && !isFileExist("$folderDirectory/$mStringName")) {
                                 downloadFile(mStringURL, mStringName)
                             } else {
+                                mPlayButton?.visibility = View.GONE
+                                mLoader?.visibility = View.VISIBLE
+                                mLoader?.startAnimation()
                                 if (mTarget != null) {
                                     if (!mPlayerAdapter!!.hasTarget(mTarget)) {
                                         val urlFile = when (mTarget!!.targetType) {
@@ -502,6 +502,13 @@ class WavePlayerView : RelativeLayout {
             return false
         }
         return true
+    }
+
+    fun stopPlaying() {
+        if (mPlayerAdapter!!.isPlaying) {
+            mPlayerAdapter!!.pause()
+            mPlayerAdapter!!.release()
+        }
     }
 
 }
