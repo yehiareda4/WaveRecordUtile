@@ -267,13 +267,12 @@ class WavePlayerView : RelativeLayout {
                 mPlayButton?.visibility = View.VISIBLE
                 mPauseButton?.visibility = View.GONE
             }
-        }
-        mPlayButton?.setOnClickListener {
+        }/*mPlayButton?.setOnClickListener {
             if (!mPlayerAdapter!!.hasTarget(mTarget)) {
                 val handler = Handler(Looper.myLooper()!!)
                 handler.postDelayed({ // Do something after 5s = 5000ms
-                    if (!mPlayerAdapter?.isPlaying!!) {
-                        if (checkAndRequestPermissions()) {
+                    if (checkAndRequestPermissions()) {
+                        if (!mPlayerAdapter?.isPlaying!!) {
                             if (mStringName.isNotEmpty() && !isFileExist("$folderDirectory/$mStringName")) {
                                 downloadFile(mStringURL, mStringName)
                             } else {
@@ -319,6 +318,59 @@ class WavePlayerView : RelativeLayout {
                 }, 2000)
             } else {
                 mPlayerAdapter!!.play()
+            }
+        }*/
+        mPlayButton?.setOnClickListener {
+            if (checkAndRequestPermissions()) {
+                mPlayButton?.visibility = View.GONE
+                if (!mPlayerAdapter!!.hasTarget(mTarget)) {
+                    mLoader?.visibility = View.VISIBLE
+                    mLoader?.startAnimation()
+                    val handler = Handler(Looper.myLooper()!!)
+                    handler.postDelayed({ // Do something after 5s = 5000ms
+                        if (!mPlayerAdapter?.isPlaying!!) {
+                            if (mStringName.isNotEmpty() && !isFileExist("$folderDirectory/$mStringName")) {
+                                downloadFile(mStringURL, mStringName)
+                            } else {
+                                if (mTarget != null) {
+                                    if (!mPlayerAdapter!!.hasTarget(mTarget)) {
+                                        val urlFile = when (mTarget!!.targetType) {
+                                            PlayerTarget.Type.RESOURCE -> {
+                                                (mTarget!!.resource).toString()
+                                            }
+
+                                            PlayerTarget.Type.REMOTE_FILE_URL -> {
+                                                (mTarget!!.remoteUrl).toString()
+                                            }
+
+                                            PlayerTarget.Type.LOCAL_FILE_URI -> {
+                                                Log.e(
+                                                    "MEDIAPLAY_HOLDER_TAG", "Type is LOCAL_FILE_URI"
+                                                )
+                                                val audioFile = File(mTarget!!.fileUri.toString())
+                                                if (audioFile.exists()) {
+                                                    (mTarget!!.fileUri.toString())
+                                                } else ""
+                                            }
+
+                                            else -> ""
+                                        }
+
+                                        mPlayerAdapter!!.reset(false)
+                                        initializePlaybackController()
+                                        mPlayerAdapter!!.loadMedia(mTarget)
+                                        runBlocking(Dispatchers.IO) {
+                                            mSeekBar?.setSampleFrom(url)
+                                        }
+                                    }
+                                    mPlayerAdapter!!.play()
+                                }
+                            }
+                        }
+                    }, 2000)
+                } else {
+                    mPlayerAdapter!!.play()
+                }
             }
         }
     }
